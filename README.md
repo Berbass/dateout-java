@@ -5,11 +5,17 @@ This project is a Java-based application designed to extract and process dates e
 ## Features
 
 - Extract dates from user-provided text.
-- Supports multiple date formats:
+- Supports multiple date formats, in both numeric and textual representations, English and French:
   - `DDMMYY` (e.g., `100523`)
   - `DD MM YY` (e.g., `10 05 23`)
+  - `DD MM YYYY` (e.g., `10 05 2023`)
+  - `DD MMM YY` (e.g., `11 Apr 23`)
+  - `MMM DD YYYY` (e.g., `Jun 10th 2023`)
+  - `DD MMMM YY` (e.g., `10 Juillet 23`)
+  - ...
 - Validates extracted dates to ensure they are meaningful.
 - Provides test cases to verify functionality.
+- ⚠️ Dates can not always be extracted correctly, especially when the text is ambiguous or contains multiple date formats.
 
 ## Prerequisites
 
@@ -25,18 +31,16 @@ This project is a Java-based application designed to extract and process dates e
    ```
 
 2. Compile and run the application:
-   ```bash
-   javac -d out src/**/*.java
-   java -cp out Main
-   ```
 
-3. Follow the prompts in the console to input text and extract dates.
+This project is built to be integrated easily with IntelliJ IDEA as it uses a .iml file for project configuration. You can also compile and run it using standard java commands.
+
+3. Once the Main process is ran, follow the prompts in the console to input text and extract dates.
 
 ## Project Structure
 
 - `src/Main.java`: Entry point of the application.
 - `src/utils/DateProcessing.java`: Contains logic for extracting and validating dates.
-- `src/test/java/date_processing/FullNumbersDateTest.java`: Unit tests for date extraction and validation.
+- `src/test/java/date_processing/*`: Unit tests for date extraction and validation.
 - `LICENSE`: Apache License 2.0 for the project.
 
 ## Example Usage
@@ -45,22 +49,18 @@ When you run the application, you can input text containing dates. For example:
 
 Input:
 ```
-The event is scheduled for 10 05 23.
+The event is scheduled for jan. 12 24.
 ```
 
 Output:
 ```
-Processing the provided text: "The event is scheduled for 10 05 23."...
-The following date was matched: "Wed May 10 00:00:00 UTC 2023"
+Processing the provided text: "The event is scheduled for jan. 12 24."...
+The following date was matched: "Fri Jan 12 00:00:00 CET 2024"
 ```
 
 ## Running Tests
 
-To run the test cases, use the following command:
-
-```bash
-java -jar junit-platform-console-standalone-1.8.1.jar --class-path out --scan-class-path
-```
+The project includes unit tests to verify the functionality of date extraction and validation. You can run the tests using your IDE or via command line.
 
 Ensure the `JUnit 5` dependencies are correctly set up in your environment.
 
