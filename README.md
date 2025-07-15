@@ -16,6 +16,7 @@ This project is a Java-based application designed to extract and process dates e
 - Validates extracted dates to ensure they are meaningful.
 - Provides test cases to verify functionality.
 - ⚠️ Dates can not always be extracted correctly, especially when the date format is ambiguous.
+- ⚠️ The date guessing capability is limited the most for 6 digit dates.
 
 ## Prerequisites
 
