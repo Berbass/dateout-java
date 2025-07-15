@@ -66,10 +66,10 @@ The date processing logics of this project can handle the following date formats
    Example: `10 Mai 23`
 
 5. **DD MMM YYYY (with suffix)**  
-   Example: `10ème Mai 2023`
+   Example: `1er Mai 2023`
 
 6. **DD MMMM YY (with suffix)**  
-   Example: `10ème Mai 23`
+   Example: `1ier Mai 23`
 
 7. **YYYY MMM DD**  
    Example: `2023 Mai 10`
@@ -77,5 +77,5 @@ The date processing logics of this project can handle the following date formats
 ## Notes
 - The file supports both **numeric** and **textual** date formats in **English** and **French**.
 - It can handle **ambiguous formats** by attempting to guess the correct interpretation (e.g., swapping day and month if necessary).
-- **Suffixes** like `st`, `nd`, `rd`, `th` (English) and `er`, `ème` (French) are also supported.
+- **Suffixes** like `st`, `nd`, `rd`, `th` (English) and `er`, `ier` (French) are also supported.
 - ⚠️ The date guessing capability is limited, especially for 6-digit dates, as it relies on the current year being obvious from the text.
