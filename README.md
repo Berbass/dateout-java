@@ -6,17 +6,16 @@ This project is a Java-based application designed to extract and process dates e
 
 - Extract dates from user-provided text.
 - Supports multiple date formats, in both numeric and textual representations, English and French:
-  - `DDMMYY` (e.g., `100523`)
-  - `DD MM YY` (e.g., `10 05 23`)
   - `DD MM YYYY` (e.g., `10 05 2023`)
-  - `DD MMM YY` (e.g., `11 Apr 23`)
+  - `DD/MMM/YY` (e.g., `11 Apr 23`)
   - `MMM DD YYYY` (e.g., `Jun 10th 2023`)
   - `DD MMMM YY` (e.g., `10 Juillet 23`)
-  - ...
+  - `YYYY-MM-DD` (e.g., `2023-05-10`)
+  - more on [supported date formats](docs/supported_date_formats.md).
 - Validates extracted dates to ensure they are meaningful.
 - Provides test cases to verify functionality.
 - ⚠️ Dates can not always be extracted correctly, especially when the date format is ambiguous.
-- ⚠️ The date guessing capability is limited the most for 6 digit dates.
+- ⚠️ The date guessing capability is limited, especially for 6-digit dates, as it relies on the current year being obvious from the text.
 
 ## Prerequisites
 
