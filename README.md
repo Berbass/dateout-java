@@ -1,4 +1,4 @@
-# Extract Embedded Date
+# DateOut _- Extract Embedded Date_
 
 This project is a Java-based application designed to extract and process dates embedded in text. It uses regular expressions to identify date patterns and provides functionality to validate and process these dates.
 
@@ -15,7 +15,7 @@ This project is a Java-based application designed to extract and process dates e
   - ...
 - Validates extracted dates to ensure they are meaningful.
 - Provides test cases to verify functionality.
-- ⚠️ Dates can not always be extracted correctly, especially when the text is ambiguous or contains multiple date formats.
+- ⚠️ Dates can not always be extracted correctly, especially when the date format is ambiguous.
 
 ## Prerequisites
 
