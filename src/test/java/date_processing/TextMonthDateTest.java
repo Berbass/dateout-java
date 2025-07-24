@@ -172,4 +172,32 @@ public class TextMonthDateTest {
         assertNotNull(actualDate, "The matched date should not be null.");
         assertEquals(expectedDate.toString(), actualDate.toString(), "The matched date should match the expected date.");
     }
+
+    @Test
+    void testDDMMMMYYYY_UnspacedFrDate() {
+        String input = "23janvier2023";
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.JANUARY, 23, 0, 0, 0);
+
+        Date expectedDate = calendar.getTime();
+        Date actualDate = DateProcessing.getMatchedTextMonthDate(input);
+
+        assertNotNull(actualDate, "The matched date should not be null.");
+        assertEquals(expectedDate.toString(), actualDate.toString(), "The matched date should match the expected date.");
+    }
+
+    @Test
+    void testDDMMMMYYYY_UnspacedEnDate() {
+        String input = "march222023";
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2023, Calendar.MARCH, 22, 0, 0, 0);
+
+        Date expectedDate = calendar.getTime();
+        Date actualDate = DateProcessing.getMatchedTextMonthDate(input);
+
+        assertNotNull(actualDate, "The matched date should not be null.");
+        assertEquals(expectedDate.toString(), actualDate.toString(), "The matched date should match the expected date.");
+    }
 }

@@ -200,7 +200,7 @@ public class DateProcessing {
                         .flatMap(Arrays::stream)
                         .toArray(String[]::new));
 
-        String regexTextMonthDate = "(\\d{1,2}(?:er|ier)?)\\s+(" + joinedMonthNames + ")\\.?\\s+(\\d{2,4})";
+        String regexTextMonthDate = "(\\d{1,2}(?:er|ier)?)\\s*(" + joinedMonthNames + ")\\.?\\s*(\\d{2,4})";
         Pattern pattern = Pattern.compile(regexTextMonthDate, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
 
@@ -248,9 +248,9 @@ public class DateProcessing {
                         .flatMap(Arrays::stream)
                         .toArray(String[]::new));
 
-        String regexTextMonthDate1 = "(" + joinedMonthNames + ")\\.?\\s+(\\d{1,2}(?:st|nd|rd|th)?)\\s+(\\d{2,4})";
-        String regexTextMonthDate2 = "(\\d{1,2}(?:st|nd|rd|th)?)\\s+(" + joinedMonthNames + ")\\.?\\s+(\\d{2,4})";
-        String regexTextMonthDate3 = "(\\d{2,4})\\s+(" + joinedMonthNames + ")\\.?\\s+(\\d{1,2}(?:st|nd|rd|th)?)";
+        String regexTextMonthDate1 = "(" + joinedMonthNames + ")\\.?\\s*(\\d{1,2}(?:st|nd|rd|th)?)\\s*(\\d{2,4})";
+        String regexTextMonthDate2 = "(\\d{1,2}(?:st|nd|rd|th)?)\\s*(" + joinedMonthNames + ")\\.?\\s*(\\d{2,4})";
+        String regexTextMonthDate3 = "(\\d{2,4})\\s*(" + joinedMonthNames + ")\\.?\\s*(\\d{1,2}(?:st|nd|rd|th)?)";
 
         String[] regexesToTry = {regexTextMonthDate1, regexTextMonthDate2, regexTextMonthDate3};
 
