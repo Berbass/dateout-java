@@ -9,6 +9,41 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DateProcessing {
+    public static String[][] MONTH_NAMES_EN = {
+            {"january", "jan"},
+            {"february", "feb", "febr"},
+            {"march", "mar"},
+            {"april", "apr", "aprl"},
+            {"may"},
+            {"june", "jun"},
+            {"july", "jul"},
+            {"august", "aug"},
+            {"september", "sep", "sept"},
+            {"october", "oct"},
+            {"november", "nov"},
+            {"december", "dec"}
+    };
+
+    public static String[][] MONTH_NAMES_FR = {
+            {"janvier", "janv", "jan",},
+            {"février", "fevrier", "févr", "fevr", "fév", "fev"},
+            {"mars", "mar"},
+            {"avril", "avr", "avrl"},
+            {"mai"},
+            {"juin"},
+            {"juillet", "juil"},
+            {"août", "aout", "aou", "aoû"},
+            {"septembre", "sept", "sep"},
+            {"octobre", "oct"},
+            {"novembre", "nov"},
+            {"décembre", "decembre", "déc", "dec"}
+    };
+
+    public static int getCurrentYear() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR);
+    }
+
     public static int getCurrentCentury() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -180,23 +215,8 @@ public class DateProcessing {
     }
 
     protected static Date getPossibleFrenchTextMonthDate(String input) {
-        String[][] monthNames = {
-                {"janvier", "janv", "jan",},
-                {"février", "fevrier", "févr", "fevr", "fév", "fev"},
-                {"mars", "mar"},
-                {"avril", "avr", "avrl"},
-                {"mai"},
-                {"juin"},
-                {"juillet", "juil"},
-                {"août", "aout", "aou", "aoû"},
-                {"septembre", "sept", "sep"},
-                {"octobre", "oct"},
-                {"novembre", "nov"},
-                {"décembre", "decembre", "déc", "dec"}
-        };
-
         String joinedMonthNames = String.join("|",
-                Arrays.stream(monthNames)
+                Arrays.stream(MONTH_NAMES_FR)
                         .flatMap(Arrays::stream)
                         .toArray(String[]::new));
 
@@ -214,8 +234,8 @@ public class DateProcessing {
                 year += getCurrentCentury();
             }
 
-            for (int i = 0; i < monthNames.length; i++) {
-                for (String monthName : monthNames[i]) {
+            for (int i = 0; i < MONTH_NAMES_FR.length; i++) {
+                for (String monthName : MONTH_NAMES_FR[i]) {
                     if (monthString.startsWith(monthName)) {
                         int month = i + 1; // Convert to 1-based month index
                         return getDateFromInts(year, month, day);
@@ -228,23 +248,8 @@ public class DateProcessing {
     }
 
     protected static Date getPossibleEnglishTextMonthDate(String input) {
-        String[][] monthNames = {
-                {"january", "jan"},
-                {"february", "feb", "febr"},
-                {"march", "mar"},
-                {"april", "apr", "aprl"},
-                {"may"},
-                {"june", "jun"},
-                {"july", "jul"},
-                {"august", "aug"},
-                {"september", "sep", "sept"},
-                {"october", "oct"},
-                {"november", "nov"},
-                {"december", "dec"}
-        };
-
         String joinedMonthNames = String.join("|",
-                Arrays.stream(monthNames)
+                Arrays.stream(MONTH_NAMES_EN)
                         .flatMap(Arrays::stream)
                         .toArray(String[]::new));
 
@@ -290,8 +295,8 @@ public class DateProcessing {
                     year += getCurrentCentury();
                 }
 
-                for (int j = 0; j < monthNames.length; j++) {
-                    for (String monthName : monthNames[j]) {
+                for (int j = 0; j < MONTH_NAMES_EN.length; j++) {
+                    for (String monthName : MONTH_NAMES_EN[j]) {
                         if (monthString.startsWith(monthName)) {
                             int month = j + 1; // Convert to 1-based month index
                             return getDateFromInts(year, month, day);
@@ -300,6 +305,67 @@ public class DateProcessing {
                 }
             }
 
+        }
+
+        return null;
+    }
+
+    public static Date getMatchedTextDateW_O_Year(String input) {
+        String cleanedInput = StringProcessing.getCleanedInput(input);
+        String joinedMonthNamesEn = String.join("|",
+                Arrays.stream(MONTH_NAMES_EN)
+                        .flatMap(Arrays::stream)
+                        .toArray(String[]::new));
+        String joinedMonthNamesFr = String.join("|",
+                Arrays.stream(MONTH_NAMES_FR)
+                        .flatMap(Arrays::stream)
+                        .toArray(String[]::new));
+
+        String regexTextMonthDate = "(\\d{1,2}(?:st|nd|rd|th)?)\\s*(" + joinedMonthNamesEn + "|" + joinedMonthNamesFr + ")\\.?";
+        String regexTextMonthDate2 = "(" + joinedMonthNamesEn + "|" + joinedMonthNamesFr + ")\\.?\\s*(\\d{1,2}(?:st|nd|rd|th)?)";
+
+        String[] regexesToTry = {regexTextMonthDate, regexTextMonthDate2};
+
+        for (int i = 0; i < regexesToTry.length; i++) {
+            Pattern pattern = Pattern.compile(regexesToTry[i], Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(cleanedInput);
+
+            if (matcher.find()) {
+                String monthString, dayNumber;
+                int day;
+
+                switch (i) {
+                    case 0 -> {
+                        dayNumber = matcher.group(1).replaceAll("[^\\d]", ""); // Remove any suffix like 'st', 'nd', 'rd', 'th'
+                        day = Integer.parseInt(dayNumber);
+                        monthString = matcher.group(2).toLowerCase();
+                    }
+                    case 1 -> {
+                        monthString = matcher.group(1).toLowerCase();
+                        dayNumber = matcher.group(2).replaceAll("[^\\d]", ""); // Remove any suffix like 'st', 'nd', 'rd', 'th'
+                        day = Integer.parseInt(dayNumber);
+                    }
+                    default -> throw new IllegalStateException("Unexpected value: " + i);
+                }
+
+                for (int j = 0; j < MONTH_NAMES_EN.length; j++) {
+                    for (String monthName : MONTH_NAMES_EN[j]) {
+                        if (monthString.startsWith(monthName)) {
+                            int month = j + 1; // Convert to 1-based month index
+                            return getDateFromInts(getCurrentYear(), month, day);
+                        }
+                    }
+                }
+
+                for (int j = 0; j < MONTH_NAMES_FR.length; j++) {
+                    for (String monthName : MONTH_NAMES_FR[j]) {
+                        if (monthString.startsWith(monthName)) {
+                            int month = j + 1; // Convert to 1-based month index
+                            return getDateFromInts(getCurrentYear(), month, day);
+                        }
+                    }
+                }
+            }
         }
 
         return null;
@@ -314,6 +380,10 @@ public class DateProcessing {
         }
 
         if ((date = getPossibleFrenchTextMonthDate(cleanedInput)) != null) {
+            return date;
+        }
+
+        if ((date = getMatchedTextDateW_O_Year(cleanedInput)) != null) {
             return date;
         }
 
